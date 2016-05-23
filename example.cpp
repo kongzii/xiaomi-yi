@@ -22,7 +22,7 @@ int main() {
 
     // You can send your own commands, too, some you will find in commands.txt
     const std::string custom = "{\"msg_id\":2,\"token\": "
-    	 + yi.status().token // token from status is std::string
+    	 + yi.status().token // token from status is std::string, so you can easily join them with commands
     	 + ", \"type\":\"video_resolution\", \"param\":\"1920x1080 60P 16:9\"}"; 
     yi.send(custom); // custom have to be std::string with proper format, as above
     sleep(5);
