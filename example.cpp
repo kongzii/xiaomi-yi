@@ -5,7 +5,8 @@ int main() {
 	using std::cout; using std::cerr; using std::endl; using std::boolalpha;
     using kongzii::xiaomi_yi::XiaomiYi;
     
-    XiaomiYi yi; // Create XiaomiYi object with default values (IP: 192.168.42.1, PORT: 7878, TIMEOUT: 5 seconds)
+    XiaomiYi yi; // Create XiaomiYi object with default values
+    		 	 //(IP: 192.168.42.1, PORT: 7878, TIMEOUT: 5 seconds)
 
     if(!(yi.start())) { // Will return false if connection to Yi fails
     	cerr << "Something went wrong." << endl;
@@ -20,7 +21,9 @@ int main() {
     sleep(5);
 
     // You can send your own commands, too, some you will find in commands.txt
-    const std::string custom = "{\"msg_id\":2,\"token\": " + yi.status().token + ", \"type\":\"video_resolution\", \"param\":\"1920x1080 60P 16:9\"}"; // token from status is std::string
+    const std::string custom = "{\"msg_id\":2,\"token\": "
+    	 + yi.status().token // token from status is std::string
+    	 + ", \"type\":\"video_resolution\", \"param\":\"1920x1080 60P 16:9\"}"; 
     yi.send(custom); // custom have to be std::string with proper format, as above
     sleep(5);
 
