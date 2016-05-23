@@ -17,14 +17,14 @@ namespace kongzii {
 		}
 
     	struct XYConnection {
-    		XYConnection(const std::string ip, const unsigned int port, unsigned int timeout, const bool active, const unsigned int token):
+    		XYConnection(const std::string ip, const unsigned int port, unsigned int timeout, const bool active, const std::string token):
     			ip(ip), port(port), timeout(timeout), active(active), token(token) {  }
 
     		const std::string ip;
     		const unsigned int port;
     		const unsigned int timeout;
     		const bool active;
-    		const unsigned int token;
+    		const std::string token;
     	};
 
     	class XiaomiYi {
@@ -40,15 +40,17 @@ namespace kongzii {
             XYConnection status() const noexcept;
             std::string send(const std::string);
 
-            inline void shoot();
+            inline bool shoot();
+            inline bool record();
     	private:
     		const std::string ip = "192.168.42.1";
     		const unsigned int port = 7878;
     		const unsigned int timeout = 5;
 
     		bool active = false;
-    		unsigned int token;
+    		std::string token;
     		int sockfd;
+            bool recording = false;
     	};
 
     	inline void XiaomiYi::stop() {
@@ -84,7 +86,7 @@ namespace kongzii {
             if (n < 0) { error("Error while writing to socket."); }
 
             bzero(buffer, 256);
-            for(int i = 0; i < 2; ++i) {
+            for(int i = 0; (active == false)?(i < 2):(i < 1); ++i) { // Read two times for getting token
                 n = read(sockfd, buffer, 255);
                 if (n < 0) { error("Error while reading from socket."); }
             }
@@ -96,7 +98,8 @@ namespace kongzii {
 		    auto response = send("{\"msg_id\":257, \"token\":0}");
 			auto json = nlohmann::json::parse(response);
 
-		    token = json["param"];
+            int get_token = json["param"];
+		    token = std::to_string(get_token);
 		    active = true;
 		    std::clog << "Connection esthabilised with token: " << token << std::endl;
 		    return active;
@@ -106,9 +109,28 @@ namespace kongzii {
     		return XYConnection(ip, port, timeout, active, token);
     	}
 
-        inline void XiaomiYi::shoot() {
-            const std::string comm = "{\"msg_id\": 769, \"token\": " + std::to_string(token) + "}"; 
+        inline bool XiaomiYi::shoot() {
+            const std::string comm = "{\"msg_id\": 769, \"token\": " + token + "}"; 
             auto response = send(comm);
+            std::clog << "Shoot." << std::endl;
+
+            return true;
+        }
+
+        inline bool XiaomiYi::record() {
+            std::string r = (recording == false) ? "513" : "514";
+            const std::string comm = "{\"msg_id\": " + r + ", \"token\": " + token + "}"; 
+            auto response = send(comm);
+
+            if (recording == false) {
+                std::clog << "Start recording." << std::endl;
+                recording = true;
+            } else {
+                std::clog << "Stop recording." << std::endl;
+                recording = false;
+            } 
+
+            return true;
         }
 
     	XiaomiYi::XiaomiYi(const std::string ip, const unsigned int port, const unsigned int timeout):

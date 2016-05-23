@@ -12,8 +12,18 @@ int main() {
     }
 
     yi.shoot(); // Take photo
+    sleep(5); // Give it some time..
+
+    yi.record(); // Start recording
+    usleep( 15 * 1000000 ); // Record for 15 seconds
+    yi.record(); // Stop
+    sleep(5);
+
+    // You can send your own commands, too, some you will find in commands.txt
+    const std::string custom = "{\"msg_id\":2,\"token\": " + yi.status().token + ", \"type\":\"video_resolution\", \"param\":\"1920x1080 60P 16:9\"}"; // token from status is std::string
+    yi.send(custom); // custom have to be std::string with proper format, as above
+    sleep(5);
 
     yi.stop(); // Disconnect from Yi
-
     return 0;
 }
