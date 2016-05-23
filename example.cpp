@@ -16,7 +16,7 @@ int main() {
     sleep(5); // Give it some time..
 
     yi.record(); // Start recording
-    usleep( 15 * 1000000 ); // Record for 15 seconds
+    sleep(15); // Record for 15 seconds
     yi.record(); // Stop
     sleep(5);
 
