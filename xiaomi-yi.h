@@ -1,3 +1,6 @@
+#ifndef XIAOMIYI_XIAOMI_YI_H_
+#define XIAOMIYI_XIAOMI_YI_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -76,7 +79,7 @@ namespace kongzii {
                 server->h_length);
 
             serv_addr.sin_port = htons(port);
-            if (connect(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
+            if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
                 error("Error while connecting."); }
 
             bzero(buffer,256); // Nulls the buffer
@@ -143,3 +146,5 @@ namespace kongzii {
 			ip(ip) {  }
     }
 }
+
+#endif // XIAOMIYI_XIAOMI_YI_H_
