@@ -1,5 +1,5 @@
-#ifndef XIAOMIYI_XIAOMI_YI_H_
-#define XIAOMIYI_XIAOMI_YI_H_
+#ifndef KONGZII_XIAOMIYI_XIAOMI_YI_H_
+#define KONGZII_XIAOMIYI_XIAOMI_YI_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -147,4 +147,4 @@ namespace kongzii {
     }
 }
 
-#endif // XIAOMIYI_XIAOMI_YI_H_
+#endif // KONGZII_XIAOMIYI_XIAOMI_YI_H_
